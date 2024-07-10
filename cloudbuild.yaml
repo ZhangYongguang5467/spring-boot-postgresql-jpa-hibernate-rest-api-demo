@@ -6,11 +6,11 @@ steps:
 
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_CUSTOM_PROJECT_ID}/spring-boot-app', '.']
+    args: ['build', '-t', 'gcr.io/bamboo-shift-418807/spring-boot-app', '.']
 
   # Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/${_CUSTOM_PROJECT_ID}/spring-boot-app']
+    args: ['push', 'gcr.io/bamboo-shift-418807/spring-boot-app']
 
   # SSH into the GCE instance and pull the latest Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -21,10 +21,10 @@ steps:
       - '--zone=${_ZONE}'
       - '--command'
       - |
-        'docker pull gcr.io/${_CUSTOM_PROJECT_ID}/spring-boot-app && \
-         docker stop spring-boot-app || true && \
-         docker rm spring-boot-app || true && \
-         docker run -d -p 8080:8080 --name spring-boot-app gcr.io/${_CUSTOM_PROJECT_ID}/spring-boot-app'
+        'sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app && \
+         sudo docker stop spring-boot-app || true && \
+         sudo docker rm spring-boot-app || true && \
+         sudo docker run -d -p 8080:8080 --name spring-boot-app gcr.io/bamboo-shift-418807/spring-boot-app'
 
 options:
   logging: CLOUD_LOGGING_ONLY
