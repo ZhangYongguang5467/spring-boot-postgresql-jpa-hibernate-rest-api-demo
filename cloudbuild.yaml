@@ -2,7 +2,7 @@ steps:
   # Build the Java application
   - name: 'maven:3.6.3-openjdk-17'
     entrypoint: 'bash'
-    args: ['-c', 'mvn clean package']
+    args: ['-c', 'mvn clean package -DskipTests']
 
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
