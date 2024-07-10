@@ -22,10 +22,37 @@ steps:
       - '--zone=${_ZONE}'
       - '--command'
       - |
-        'sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app && \
-         sudo docker stop spring-boot-app || true && \
-         sudo docker rm spring-boot-app || true && \
-         sudo docker run -d -p 8080:8080 --name spring-boot-app gcr.io/bamboo-shift-418807/spring-boot-app'
+        'sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - '${_INSTANCE_NAME}'
+      - '--project=bamboo-shift-418807'
+      - '--zone=${_ZONE}'
+      - '--command'
+      - |
+        'sudo docker stop spring-boot-app || true'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - '${_INSTANCE_NAME}'
+      - '--project=bamboo-shift-418807'
+      - '--zone=${_ZONE}'
+      - '--command'
+      - |
+        'sudo docker rm spring-boot-app || true'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - '${_INSTANCE_NAME}'
+      - '--project=bamboo-shift-418807'
+      - '--zone=${_ZONE}'
+      - '--command'
+      - |
+        'sudo docker run -d -p 8080:8080 --name spring-boot-app gcr.io/bamboo-shift-418807/spring-boot-app'
 
 options:
   logging: CLOUD_LOGGING_ONLY
