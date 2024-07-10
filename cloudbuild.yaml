@@ -1,13 +1,18 @@
 steps:
-  # Step 1: Build the Docker image
+  # Build the Java application
+  - name: 'maven:3.6.3-openjdk-17'
+    entrypoint: 'bash'
+    args: ['-c', 'mvn clean package']
+
+  # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/spring-boot-app', '.']
 
-  # Step 2: Push the Docker image to Google Container Registry
+  # Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/${_PROJECT_ID}/spring-boot-app']
 
-  # Step 3: SSH into the GCE instance and pull the latest Docker image
+  # SSH into the GCE instance and pull the latest Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'compute'
