@@ -14,8 +14,17 @@ steps:
 
   # SSH into the GCE instance and pull the latest Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
+    args: [ 'push', 'gcr.io/bamboo-shift-418807/spring-boot-app' ]
+
+  - name: 'gcr.io/cloud-builders/gcloud'
     args:
-      - 'compute ssh web-api-instance1 --project=bamboo-shift-418807 --zone=asia-northeast1-a --command="sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app"'
+      - 'compute'
+      - 'ssh'
+      - 'web-api-instance1'
+      - '--project=bamboo-shift-418807'
+      - '--zone=asia-northeast1-a'
+      - '--command'
+      - 'ls'
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
