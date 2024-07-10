@@ -18,6 +18,7 @@ steps:
       - 'compute'
       - 'ssh'
       - '${_INSTANCE_NAME}'
+      - '--project=bamboo-shift-418807'
       - '--zone=${_ZONE}'
       - '--command'
       - |
