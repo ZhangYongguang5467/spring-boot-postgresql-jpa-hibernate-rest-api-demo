@@ -15,21 +15,15 @@ steps:
   # SSH into the GCE instance and pull the latest Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
-      - 'compute'
-      - 'ssh'
-      - '${_INSTANCE_NAME}'
-      - '--project=bamboo-shift-418807'
-      - '--zone=${_ZONE}'
-      - '--command'
-      - |
-        'sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app'
+      - 'compute ssh web-api-instance1 --project=bamboo-shift-418807 --zone=asia-northeast1-a --command="sudo docker pull gcr.io/bamboo-shift-418807/spring-boot-app"'
+
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'compute'
       - 'ssh'
-      - '${_INSTANCE_NAME}'
+      - 'web-api-instance1'
       - '--project=bamboo-shift-418807'
-      - '--zone=${_ZONE}'
+      - '--zone=asia-northeast1-a'
       - '--command'
       - |
         'sudo docker stop spring-boot-app || true'
@@ -37,9 +31,9 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - '${_INSTANCE_NAME}'
+      - 'web-api-instance1'
       - '--project=bamboo-shift-418807'
-      - '--zone=${_ZONE}'
+      - '--zone=asia-northeast1-a'
       - '--command'
       - |
         'sudo docker rm spring-boot-app || true'
@@ -47,9 +41,9 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - '${_INSTANCE_NAME}'
+      - 'web-api-instance1'
       - '--project=bamboo-shift-418807'
-      - '--zone=${_ZONE}'
+      - '--zone=asia-northeast1-a'
       - '--command'
       - |
         'sudo docker run -d -p 8080:8080 --name spring-boot-app gcr.io/bamboo-shift-418807/spring-boot-app'
