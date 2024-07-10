@@ -1,25 +1,28 @@
 steps:
   # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/spring-boot-app', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/spring-boot-app', '.']
 
   # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/spring-boot-app']
+    args: ['push', 'gcr.io/${_PROJECT_ID}/spring-boot-app']
 
   # Step 3: SSH into the GCE instance and pull the latest Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'compute'
       - 'ssh'
-      - 'YOUR_INSTANCE_NAME'
-      - '--zone=YOUR_INSTANCE_ZONE'
+      - '${_INSTANCE_NAME}'
+      - '--zone=${_ZONE}'
       - '--command'
       - |
-        'docker pull gcr.io/$PROJECT_ID/spring-boot-app && \
+        'docker pull gcr.io/${_PROJECT_ID}/spring-boot-app && \
          docker stop spring-boot-app || true && \
          docker rm spring-boot-app || true && \
-         docker run -d -p 8080:8080 --name spring-boot-app gcr.io/$PROJECT_ID/spring-boot-app'
+         docker run -d -p 8080:8080 --name spring-boot-app gcr.io/${_PROJECT_ID}/spring-boot-app'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
 
 # Substitutions for the Cloud Build
 substitutions:
